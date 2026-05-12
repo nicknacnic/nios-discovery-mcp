@@ -1,0 +1,1784 @@
+{
+  "version": "0.3",
+  "source": "merged from discovery_fields.json + live WAPI struct + empirical CSV-import probe results (5 vNIOS test grids, 2026-05).",
+  "csv_import_evidence": {
+    "method": "fileop?_function=setdiscoverycsv via 198.51.100.0/24 in network_view=discovery_probe; readback via /ipv4address?network=...&_return_fields=discovered_data",
+    "confirmed_accepted_csv_names": [
+      "ap_ip_address",
+      "ap_name",
+      "ap_ssid",
+      "bgp_as",
+      "bridge_domain",
+      "device_contact",
+      "device_location",
+      "device_model",
+      "device_port_name",
+      "device_port_type",
+      "device_type",
+      "device_vendor",
+      "mac_address",
+      "netbios_name",
+      "network_component_contact",
+      "network_component_description",
+      "network_component_ip",
+      "network_component_location",
+      "network_component_model",
+      "network_component_name",
+      "network_component_port_description",
+      "network_component_port_name",
+      "network_component_type",
+      "network_component_vendor",
+      "open_ports",
+      "os"
+    ],
+    "confirmed_silently_dropped_csv_names": [
+      "attached_device_address",
+      "attached_device_contact",
+      "attached_device_description",
+      "attached_device_location",
+      "attached_device_model",
+      "attached_device_name",
+      "attached_device_port",
+      "attached_device_port_description",
+      "attached_device_port_id",
+      "attached_device_port_name",
+      "attached_device_type",
+      "attached_device_vendor",
+      "attached_virtual_port_configured_mode",
+      "attached_virtual_port_configured_speed",
+      "attached_virtual_port_link_status",
+      "attached_virtual_port_mac_address",
+      "attached_virtual_port_mode",
+      "attached_virtual_port_name",
+      "attached_virtual_port_speed",
+      "attached_virtual_switch_id",
+      "attached_virtual_switch_ipv6_enabled",
+      "attached_virtual_switch_name",
+      "attached_virtual_switch_type",
+      "attached_virtual_switch_vtep_dhcp_server",
+      "attached_virtual_switch_vtep_ip",
+      "attached_virtual_switch_vtep_multicast",
+      "attached_virtual_switch_vtep_port_group",
+      "attached_virtual_switch_vtep_type",
+      "attached_virtual_switch_vtep_vlan",
+      "cisco_ise_end_point_profile",
+      "cisco_ise_endpoint_profile",
+      "cisco_ise_security_group",
+      "cisco_ise_session_state",
+      "cisco_ise_ssid",
+      "cmp_type",
+      "discovered_mac_address",
+      "epg",
+      "iprg_no",
+      "iprg_state",
+      "iprg_type",
+      "mgmt_ip_address",
+      "network_segment_available_ports",
+      "network_segment_id",
+      "network_segment_name",
+      "network_segment_port_group",
+      "network_segment_type",
+      "physical_host's_nic_names",
+      "physical_host_cidr_subnet",
+      "physical_host_ip_address",
+      "physical_host_mac_address",
+      "physical_host_name",
+      "port_link"
+    ],
+    "confirmed_rejected_row_csv_names": [
+      "device_management_ip",
+      "network_component_port_number",
+      "port_duplex",
+      "port_speed"
+    ],
+    "rule": "CSV header names that match WAPI internal names are accepted. Long human-friendly names from discovery_fields.json that DO NOT match a WAPI internal name are silently dropped. The full set of accepted CSV names is therefore the WAPI discoverydata field names (see wapi_only_fields below for the inverse view)."
+  },
+  "csv_fields": {
+    "ap_name": {
+      "ui_label": "AP Name",
+      "csv_name": "ap_name",
+      "wapi_name": "ap_name",
+      "type": "string",
+      "is_array": false,
+      "doc": "Discovered name of Wireless Access Point.",
+      "supports": "r",
+      "csv_probe": "accepted_exact",
+      "csv_probe_source": "round2_wapi_name"
+    },
+    "attached_device_address": {
+      "ui_label": "Attached Device Address",
+      "csv_name": "attached_device_address",
+      "wapi_name": "network_component_ip",
+      "type": "string",
+      "is_array": false,
+      "doc": "The IPv4 Address or IPv6 Address of the switch that is connected to the end device.",
+      "supports": "r",
+      "csv_probe": "silently_dropped",
+      "csv_probe_source": "round1_long_name"
+    },
+    "attached_device_contact": {
+      "ui_label": "Attached Device Contact",
+      "csv_name": "attached_device_contact",
+      "wapi_name": "network_component_contact",
+      "type": "string",
+      "is_array": false,
+      "doc": "Contact information from the network component on which the IP address was discovered.",
+      "supports": "r",
+      "csv_probe": "silently_dropped",
+      "csv_probe_source": "round1_long_name"
+    },
+    "attached_device_description": {
+      "ui_label": "Attached Device Description",
+      "csv_name": "attached_device_description",
+      "wapi_name": "network_component_description",
+      "type": "string",
+      "is_array": false,
+      "doc": "A textual description of the switch that is connected to the end device.",
+      "supports": "r",
+      "csv_probe": "silently_dropped",
+      "csv_probe_source": "round1_long_name"
+    },
+    "attached_device_location": {
+      "ui_label": "Attached Device Location",
+      "csv_name": "attached_device_location",
+      "wapi_name": "network_component_location",
+      "type": "string",
+      "is_array": false,
+      "doc": "Location of the network component on which the IP address was discovered.",
+      "supports": "r",
+      "csv_probe": "silently_dropped",
+      "csv_probe_source": "round1_long_name"
+    },
+    "attached_device_model": {
+      "ui_label": "Attached Device Model",
+      "csv_name": "attached_device_model",
+      "wapi_name": "network_component_model",
+      "type": "string",
+      "is_array": false,
+      "doc": "Model name of the switch port connected to the end host in vendor terminology.",
+      "supports": "r",
+      "csv_probe": "silently_dropped",
+      "csv_probe_source": "round1_long_name"
+    },
+    "attached_device_name": {
+      "ui_label": "Attached Device Name",
+      "csv_name": "attached_device_name",
+      "wapi_name": "network_component_name",
+      "type": "string",
+      "is_array": false,
+      "doc": "If a reverse lookup was successful for the IP address associated with this switch, the host name is displayed in this field.",
+      "supports": "r",
+      "csv_probe": "silently_dropped",
+      "csv_probe_source": "round1_long_name"
+    },
+    "attached_device_port": {
+      "ui_label": "Attached Device Port",
+      "csv_name": "attached_device_port",
+      "wapi_name": "network_component_port_number",
+      "type": "string",
+      "is_array": false,
+      "doc": "The number of the switch port connected to the end device.",
+      "supports": "r",
+      "csv_probe": "silently_dropped",
+      "csv_probe_source": "round1_long_name"
+    },
+    "attached_device_port_description": {
+      "ui_label": "Attached Device Port Description",
+      "csv_name": "attached_device_port_description",
+      "wapi_name": "network_component_port_description",
+      "type": "string",
+      "is_array": false,
+      "doc": "A textual description of the switch port that is connected to the end device.",
+      "supports": "r",
+      "csv_probe": "silently_dropped",
+      "csv_probe_source": "round1_long_name"
+    },
+    "attached_device_port_id": {
+      "ui_label": "Attached Device Port ID",
+      "csv_name": "attached_device_port_id",
+      "wapi_name": "network_component_port_number",
+      "type": "string",
+      "is_array": false,
+      "doc": "The number of the switch port connected to the end device.",
+      "supports": "r",
+      "csv_probe": "silently_dropped",
+      "csv_probe_source": "round1_long_name"
+    },
+    "attached_device_port_name": {
+      "ui_label": "Attached Device Port Name",
+      "csv_name": "attached_device_port_name",
+      "wapi_name": "network_component_port_name",
+      "type": "string",
+      "is_array": false,
+      "doc": "The name of the switch port connected to the end device.",
+      "supports": "r",
+      "csv_probe": "silently_dropped",
+      "csv_probe_source": "round1_long_name"
+    },
+    "attached_device_type": {
+      "ui_label": "Attached Device Type",
+      "csv_name": "attached_device_type",
+      "wapi_name": "network_component_type",
+      "type": "string",
+      "is_array": false,
+      "doc": "Identifies the switch that is connected to the end device.",
+      "supports": "r",
+      "csv_probe": "silently_dropped",
+      "csv_probe_source": "round1_long_name"
+    },
+    "attached_device_vendor": {
+      "ui_label": "Attached Device Vendor",
+      "csv_name": "attached_device_vendor",
+      "wapi_name": "network_component_vendor",
+      "type": "string",
+      "is_array": false,
+      "doc": "The vendor name of the switch port connected to the end host.",
+      "supports": "r",
+      "csv_probe": "silently_dropped",
+      "csv_probe_source": "round1_long_name"
+    },
+    "attached_virtual_port_configured_mode": {
+      "ui_label": "Attached Virtual Port Configured Mode",
+      "csv_name": "attached_virtual_port_configured_mode",
+      "wapi_name": "vport_conf_mode",
+      "type": "enum",
+      "is_array": false,
+      "doc": "Configured mode of the network adapter on the virtual switch where the virtual machine connected to.",
+      "supports": "r",
+      "enum_values": [
+        "Unknown",
+        "Full-duplex",
+        "Half-duplex"
+      ],
+      "csv_probe": "silently_dropped",
+      "csv_probe_source": "round1_long_name"
+    },
+    "attached_virtual_port_configured_speed": {
+      "ui_label": "Attached Virtual Port Configured Speed",
+      "csv_name": "attached_virtual_port_configured_speed",
+      "wapi_name": "vport_conf_speed",
+      "type": "string",
+      "is_array": false,
+      "doc": "Configured speed of the network adapter on the virtual switch where the virtual machine connected to. Unit is kb.",
+      "supports": "r",
+      "csv_probe": "silently_dropped",
+      "csv_probe_source": "round1_long_name"
+    },
+    "attached_virtual_port_link_status": {
+      "ui_label": "Attached Virtual Port Link Status",
+      "csv_name": "attached_virtual_port_link_status",
+      "wapi_name": "vport_link_status",
+      "type": "string",
+      "is_array": false,
+      "doc": "Link status of the network adapter on the virtual switch where the virtual machine connected to.",
+      "supports": "r",
+      "csv_probe": "silently_dropped",
+      "csv_probe_source": "round1_long_name"
+    },
+    "attached_virtual_port_mac_address": {
+      "ui_label": "Attached Virtual Port MAC Address",
+      "csv_name": "attached_virtual_port_mac_address",
+      "wapi_name": "vport_mac_address",
+      "type": "string",
+      "is_array": false,
+      "doc": "MAC address of the network adapter on the virtual switch where the virtual machine connected to.",
+      "supports": "r",
+      "csv_probe": "silently_dropped",
+      "csv_probe_source": "round1_long_name"
+    },
+    "attached_virtual_port_mode": {
+      "ui_label": "Attached Virtual Port Mode",
+      "csv_name": "attached_virtual_port_mode",
+      "wapi_name": "vport_mode",
+      "type": "enum",
+      "is_array": false,
+      "doc": "Actual mode of the network adapter on the virtual switch where the virtual machine connected to.",
+      "supports": "r",
+      "enum_values": [
+        "Unknown",
+        "Full-duplex",
+        "Half-duplex"
+      ],
+      "csv_probe": "silently_dropped",
+      "csv_probe_source": "round1_long_name"
+    },
+    "attached_virtual_port_name": {
+      "ui_label": "Attached Virtual Port Name",
+      "csv_name": "attached_virtual_port_name",
+      "wapi_name": "vport_name",
+      "type": "string",
+      "is_array": false,
+      "doc": "Name of the network adapter on the virtual switch connected with the virtual machine.",
+      "supports": "r",
+      "csv_probe": "silently_dropped",
+      "csv_probe_source": "round1_long_name"
+    },
+    "attached_virtual_port_speed": {
+      "ui_label": "Attached Virtual Port Speed",
+      "csv_name": "attached_virtual_port_speed",
+      "wapi_name": "vport_speed",
+      "type": "string",
+      "is_array": false,
+      "doc": "Actual speed of the network adapter on the virtual switch where the virtual machine connected to. Unit is kb.",
+      "supports": "r",
+      "csv_probe": "silently_dropped",
+      "csv_probe_source": "round1_long_name"
+    },
+    "attached_virtual_switch_id": {
+      "ui_label": "Attached Virtual Switch ID",
+      "csv_name": "attached_virtual_switch_id",
+      "wapi_name": "vswitch_id",
+      "type": "string",
+      "is_array": false,
+      "doc": "ID of the virtual switch.",
+      "supports": "r",
+      "csv_probe": "silently_dropped",
+      "csv_probe_source": "round1_long_name"
+    },
+    "attached_virtual_switch_ipv6_enabled": {
+      "ui_label": "Attached Virtual Switch IPv6 Enabled",
+      "csv_name": "attached_virtual_switch_ipv6_enabled",
+      "wapi_name": "vswitch_ipv6_enabled",
+      "type": "bool",
+      "is_array": false,
+      "doc": "Indicates the virtual switch has IPV6 enabled.",
+      "supports": "r",
+      "csv_probe": "silently_dropped",
+      "csv_probe_source": "round1_long_name"
+    },
+    "attached_virtual_switch_name": {
+      "ui_label": "Attached Virtual Switch Name",
+      "csv_name": "attached_virtual_switch_name",
+      "wapi_name": "vswitch_name",
+      "type": "string",
+      "is_array": false,
+      "doc": "Name of the virtual switch.",
+      "supports": "r",
+      "csv_probe": "silently_dropped",
+      "csv_probe_source": "round1_long_name"
+    },
+    "attached_virtual_switch_type": {
+      "ui_label": "Attached Virtual Switch Type",
+      "csv_name": "attached_virtual_switch_type",
+      "wapi_name": "vswitch_type",
+      "type": "enum",
+      "is_array": false,
+      "doc": "Type of the virtual switch: standard or distributed.",
+      "supports": "r",
+      "enum_values": [
+        "Unknown",
+        "Standard",
+        "Distributed"
+      ],
+      "csv_probe": "silently_dropped",
+      "csv_probe_source": "round1_long_name"
+    },
+    "attached_virtual_switch_vtep_dhcp_server": {
+      "ui_label": "Attached Virtual Switch VTEP DHCP Server",
+      "csv_name": "attached_virtual_switch_vtep_dhcp_server",
+      "wapi_name": "vswitch_tep_dhcp_server",
+      "type": "string",
+      "is_array": false,
+      "doc": "DHCP server of the virtual tunnel endpoint (VTEP) in the virtual switch.",
+      "supports": "r",
+      "csv_probe": "silently_dropped",
+      "csv_probe_source": "round1_long_name"
+    },
+    "attached_virtual_switch_vtep_ip": {
+      "ui_label": "Attached Virtual Switch VTEP IP",
+      "csv_name": "attached_virtual_switch_vtep_ip",
+      "wapi_name": "vswitch_tep_ip",
+      "type": "string",
+      "is_array": false,
+      "doc": "IP address of the virtual tunnel endpoint (VTEP) in the virtual switch.",
+      "supports": "r",
+      "csv_probe": "silently_dropped",
+      "csv_probe_source": "round1_long_name"
+    },
+    "attached_virtual_switch_vtep_multicast": {
+      "ui_label": "Attached Virtual Switch VTEP Multicast",
+      "csv_name": "attached_virtual_switch_vtep_multicast",
+      "wapi_name": "vswitch_tep_multicast",
+      "type": "string",
+      "is_array": false,
+      "doc": "Muticast address of the virtual tunnel endpoint (VTEP) in the virtual swtich.",
+      "supports": "r",
+      "csv_probe": "silently_dropped",
+      "csv_probe_source": "round1_long_name"
+    },
+    "attached_virtual_switch_vtep_port_group": {
+      "ui_label": "Attached Virtual Switch VTEP Port Group",
+      "csv_name": "attached_virtual_switch_vtep_port_group",
+      "wapi_name": "vswitch_tep_port_group",
+      "type": "string",
+      "is_array": false,
+      "doc": "Port group of the virtual tunnel endpoint (VTEP) in the virtual switch.",
+      "supports": "r",
+      "csv_probe": "silently_dropped",
+      "csv_probe_source": "round1_long_name"
+    },
+    "attached_virtual_switch_vtep_type": {
+      "ui_label": "Attached Virtual Switch VTEP Type",
+      "csv_name": "attached_virtual_switch_vtep_type",
+      "wapi_name": "vswitch_tep_type",
+      "type": "string",
+      "is_array": false,
+      "doc": "Type of virtual tunnel endpoint (VTEP) in the virtual switch.",
+      "supports": "r",
+      "csv_probe": "silently_dropped",
+      "csv_probe_source": "round1_long_name"
+    },
+    "attached_virtual_switch_vtep_vlan": {
+      "ui_label": "Attached Virtual Switch VTEP VLAN",
+      "csv_name": "attached_virtual_switch_vtep_vlan",
+      "wapi_name": "vswitch_tep_vlan",
+      "type": "string",
+      "is_array": false,
+      "doc": "VLAN of the virtual tunnel endpoint (VTEP) in the virtual switch.",
+      "supports": "r",
+      "csv_probe": "silently_dropped",
+      "csv_probe_source": "round1_long_name"
+    },
+    "bgp_as": {
+      "ui_label": "BGP AS",
+      "csv_name": "bgp_as",
+      "wapi_name": "bgp_as",
+      "type": "uint",
+      "is_array": false,
+      "doc": "The BGP autonomous system number.",
+      "supports": "r",
+      "csv_probe": "accepted_exact",
+      "csv_probe_source": "round2_wapi_name"
+    },
+    "bridge_domain": {
+      "ui_label": "Bridge Domain",
+      "csv_name": "bridge_domain",
+      "wapi_name": "bridge_domain",
+      "type": "string",
+      "is_array": false,
+      "doc": "Discovered bridge domain.",
+      "supports": "r",
+      "csv_probe": "accepted_exact",
+      "csv_probe_source": "round2_wapi_name"
+    },
+    "cisco_ise_end_point_profile": {
+      "ui_label": "Cisco ISE End Point Profile",
+      "csv_name": "cisco_ise_end_point_profile",
+      "wapi_name": "cisco_ise_endpoint_profile",
+      "type": "string",
+      "is_array": false,
+      "doc": "The Endpoint Profile created in Cisco ISE.",
+      "supports": "r",
+      "csv_probe": "silently_dropped",
+      "csv_probe_source": "round1_long_name"
+    },
+    "cisco_ise_security_group": {
+      "ui_label": "Cisco ISE Security Group",
+      "csv_name": "cisco_ise_security_group",
+      "wapi_name": "cisco_ise_security_group",
+      "type": "string",
+      "is_array": false,
+      "doc": "The Cisco ISE security group name.",
+      "supports": "r",
+      "csv_probe": "silently_dropped",
+      "csv_probe_source": "round2_wapi_name"
+    },
+    "cisco_ise_session_state": {
+      "ui_label": "Cisco ISE Session State",
+      "csv_name": "cisco_ise_session_state",
+      "wapi_name": "cisco_ise_session_state",
+      "type": "enum",
+      "is_array": false,
+      "doc": "The Cisco ISE connection session state.",
+      "supports": "r",
+      "enum_values": [
+        "AUTHENTICATED",
+        "AUTHENTICATING",
+        "DISCONNECTED",
+        "POSTURED",
+        "STARTED"
+      ],
+      "csv_probe": "silently_dropped",
+      "csv_probe_source": "round2_wapi_name"
+    },
+    "cisco_ise_ssid": {
+      "ui_label": "Cisco ISE SSID",
+      "csv_name": "cisco_ise_ssid",
+      "wapi_name": "cisco_ise_ssid",
+      "type": "string",
+      "is_array": false,
+      "doc": "The Cisco ISE SSID.",
+      "supports": "r",
+      "csv_probe": "silently_dropped",
+      "csv_probe_source": "round2_wapi_name"
+    },
+    "device_contact": {
+      "ui_label": "Device Contact",
+      "csv_name": "device_contact",
+      "wapi_name": "device_contact",
+      "type": "string",
+      "is_array": false,
+      "doc": "Contact information from device on which the IP address was discovered.",
+      "supports": "r",
+      "observed_values": [
+        "nic@infoblox.com",
+        "\"support@dell.com\"",
+        "nic@darknetian.com",
+        "you@darknetian",
+        "Unauthorized use prohibited.",
+        "bulletin.nic@gmail.com"
+      ],
+      "csv_probe": "accepted_exact",
+      "csv_probe_source": "round1_long_name"
+    },
+    "device_location": {
+      "ui_label": "Device Location",
+      "csv_name": "device_location",
+      "wapi_name": "device_location",
+      "type": "string",
+      "is_array": false,
+      "doc": "Location of device on which the IP address was discovered.",
+      "supports": "r",
+      "observed_values": [
+        "homelab",
+        "radio waves...",
+        "\"unknown\"",
+        "basement rack",
+        "Homelab",
+        "Lab"
+      ],
+      "csv_probe": "accepted_exact",
+      "csv_probe_source": "round1_long_name"
+    },
+    "device_management_ip": {
+      "ui_label": "Device Management IP",
+      "csv_name": "device_management_ip",
+      "wapi_name": "mgmt_ip_address",
+      "type": "string",
+      "is_array": false,
+      "doc": "The management IP address of the end host that has more than one IP.",
+      "supports": "r",
+      "observed_values": [
+        "10.10.0.1",
+        "10.10.0.5",
+        "10.10.0.6",
+        "10.10.0.7",
+        "10.10.0.8",
+        "10.10.0.9",
+        "10.10.0.10",
+        "10.10.0.20",
+        "10.10.0.25",
+        "10.10.0.30",
+        "10.10.0.33",
+        "10.10.0.44",
+        "10.10.0.45",
+        "10.10.0.49",
+        "10.10.0.53"
+      ],
+      "csv_probe": "rejected_row",
+      "csv_probe_source": "round1_long_name"
+    },
+    "device_model": {
+      "ui_label": "Device Model",
+      "csv_name": "device_model",
+      "wapi_name": "device_model",
+      "type": "string",
+      "is_array": false,
+      "doc": "The model name of the end device in the vendor terminology.",
+      "supports": "r",
+      "observed_values": [
+        "VMware ESXi",
+        "IB-V926",
+        "ND-V906",
+        "IB-V5005",
+        "IB-V815",
+        "IB-V1425"
+      ],
+      "csv_probe": "accepted_exact",
+      "csv_probe_source": "round1_long_name"
+    },
+    "device_port_name": {
+      "ui_label": "Device Port Name",
+      "csv_name": "device_port_name",
+      "wapi_name": "device_port_name",
+      "type": "string",
+      "is_array": false,
+      "doc": "The system name of the interface associated with the discovered IP address.",
+      "supports": "r",
+      "observed_values": [
+        "eth1",
+        "primarylan1",
+        "1"
+      ],
+      "csv_probe": "accepted_exact",
+      "csv_probe_source": "round1_long_name"
+    },
+    "device_port_type": {
+      "ui_label": "Device Port Type",
+      "csv_name": "device_port_type",
+      "wapi_name": "device_port_type",
+      "type": "string",
+      "is_array": false,
+      "doc": "The hardware type of the interface associated with the discovered IP address.",
+      "supports": "r",
+      "observed_values": [
+        "ethernet-csmacd",
+        "propVirtual"
+      ],
+      "csv_probe": "accepted_exact",
+      "csv_probe_source": "round1_long_name"
+    },
+    "device_type": {
+      "ui_label": "Device Type(s)",
+      "csv_name": "device_type",
+      "wapi_name": "device_type",
+      "type": "string",
+      "is_array": false,
+      "doc": "The type of end host in vendor terminology.",
+      "supports": "r",
+      "observed_values": [
+        "unknown",
+        "Linux",
+        "Router",
+        "Switch",
+        "vNIOS",
+        "Windows",
+        "FreeBSD",
+        "Switch-Router",
+        "OpenBSD"
+      ],
+      "csv_probe": "accepted_exact",
+      "csv_probe_source": "round1_long_name"
+    },
+    "device_vendor": {
+      "ui_label": "Device Vendor",
+      "csv_name": "device_vendor",
+      "wapi_name": "device_vendor",
+      "type": "string",
+      "is_array": false,
+      "doc": "The vendor name of the end host.",
+      "supports": "r",
+      "observed_values": [
+        "VMWare",
+        "Infoblox",
+        "Dell",
+        "Compaq",
+        "Netgear",
+        "LinkSys",
+        "Net-SNMP",
+        "Samsung",
+        "Versa",
+        "Aruba",
+        "NEC"
+      ],
+      "csv_probe": "accepted_exact",
+      "csv_probe_source": "round1_long_name"
+    },
+    "discovered_mac_address": {
+      "ui_label": "Discovered MAC Address",
+      "csv_name": "discovered_mac_address",
+      "wapi_name": "mac_address",
+      "type": "string",
+      "is_array": false,
+      "doc": "The discovered MAC address for the host. This is the unique identifier of a network device. The discovery acquires the MAC address for hosts that are located on the same network as the Grid member that is running the discovery. This can also be the MAC address of a virtual entity on a specified vSphere server.",
+      "supports": "r",
+      "observed_values": [
+        "60:ab:14:4c:fe:26",
+        "20:3d:bd:db:7b:c4",
+        "3e:4c:dc:c5:bc:7e",
+        "28:38:5c:37:71:3f",
+        "a4:f6:e8:dd:a1:d7",
+        "00:09:b0:f7:4d:80",
+        "78:55:cd:6a:28:83",
+        "2e:39:08:2b:1a:22",
+        "36:3e:7c:97:48:df",
+        "2e:30:44:45:a1:8c",
+        "00:0c:29:af:e2:e1",
+        "44:a8:42:04:37:e1",
+        "b4:b5:2f:ee:ce:f8",
+        "2c:44:fd:82:a8:98",
+        "44:a8:42:04:37:df"
+      ],
+      "csv_probe": "silently_dropped",
+      "csv_probe_source": "round1_long_name"
+    },
+    "discovered_name": {
+      "ui_label": "Discovered Name",
+      "csv_name": "discovered_name",
+      "wapi_name": "discovered_name",
+      "type": "string",
+      "is_array": false,
+      "doc": "The name of the network device associated with the discovered IP address.",
+      "supports": "r",
+      "observed_values": [
+        "unknown",
+        "e300.darknetian.com",
+        "vcenter.darknetian.com",
+        "idrac.darknetian.com",
+        "ilo-esxi2.darknetian.com",
+        "esxi2.darknetian.com",
+        "esxi1.darknetian.com",
+        "nighthawk.darknetian.com",
+        "ai.darknetian.com",
+        "netmri.darknetian.com",
+        "switch.darknetian.com",
+        "infoblox.darknetian.com",
+        "panorama.darknetian.com",
+        "eth1/4",
+        "uddi"
+      ]
+    },
+    "discoverer": {
+      "ui_label": "Discoverer",
+      "csv_name": "discoverer",
+      "wapi_name": "discoverer",
+      "type": "string",
+      "is_array": false,
+      "doc": "Specifies whether the IP address was discovered by a NetMRI or NIOS discovery process.",
+      "supports": "r",
+      "observed_values": [
+        "Network Insight"
+      ]
+    },
+    "epg": {
+      "ui_label": "EPG",
+      "csv_name": "epg",
+      "wapi_name": "endpoint_groups",
+      "type": "string",
+      "is_array": false,
+      "doc": "A comma-separated list of the discovered endpoint groups.",
+      "supports": "r",
+      "csv_probe": "silently_dropped",
+      "csv_probe_source": "round1_long_name"
+    },
+    "first_discovered_timestamp": {
+      "ui_label": "First Discovered",
+      "csv_name": "first_discovered_timestamp",
+      "wapi_name": "first_discovered",
+      "type": "timestamp",
+      "is_array": false,
+      "doc": "The date and time the IP address was first discovered in Epoch seconds format.",
+      "supports": "r",
+      "observed_values": [
+        "1773709331",
+        "1773706188",
+        "1773704376",
+        "1773708727",
+        "1773704256",
+        "1773710541",
+        "1773704135",
+        "1773704497",
+        "1774056506",
+        "1774221061",
+        "1773655715",
+        "1775709330",
+        "1773705705",
+        "1774088937",
+        "1776715866"
+      ]
+    },
+    "last_discovered_timestamp": {
+      "ui_label": "Last Discovered",
+      "csv_name": "last_discovered_timestamp",
+      "wapi_name": "last_discovered",
+      "type": "timestamp",
+      "is_array": false,
+      "doc": "The date and time the IP address was last discovered in Epoch seconds format.",
+      "supports": "r",
+      "observed_values": [
+        "1778371408",
+        "1778457771",
+        "1778510364",
+        "1778459150",
+        "1778459154",
+        "1778510363",
+        "1778467124",
+        "1778462794",
+        "1778510335",
+        "1778508925",
+        "1778508826",
+        "1778506998",
+        "1778462182",
+        "1778462845",
+        "1778457372"
+      ]
+    },
+    "netbios_name": {
+      "ui_label": "NetBIOS Name",
+      "csv_name": "netbios_name",
+      "wapi_name": "netbios_name",
+      "type": "string",
+      "is_array": false,
+      "doc": "The name returned in the NetBIOS reply or the name you manually register for the discovered host.",
+      "supports": "r",
+      "observed_values": [
+        "NAS            ",
+        "L8-MBP         "
+      ],
+      "csv_probe": "accepted_exact",
+      "csv_probe_source": "round2_wapi_name"
+    },
+    "network_segment_available_ports": {
+      "ui_label": "Network Segment Available Ports",
+      "csv_name": "network_segment_available_ports",
+      "wapi_name": "vswitch_available_ports_count",
+      "type": "uint",
+      "is_array": false,
+      "doc": "Numer of available ports reported by the virtual switch on which the virtual machine/vport connected to.",
+      "supports": "r",
+      "csv_probe": "silently_dropped",
+      "csv_probe_source": "round1_long_name"
+    },
+    "network_segment_id": {
+      "ui_label": "Network Segment ID",
+      "csv_name": "network_segment_id",
+      "wapi_name": "vswitch_segment_id",
+      "type": "string",
+      "is_array": false,
+      "doc": "ID of the network segment on which the current virtual machine/vport connected to.",
+      "supports": "r",
+      "csv_probe": "silently_dropped",
+      "csv_probe_source": "round1_long_name"
+    },
+    "network_segment_name": {
+      "ui_label": "Network Segment Name",
+      "csv_name": "network_segment_name",
+      "wapi_name": "vswitch_segment_name",
+      "type": "string",
+      "is_array": false,
+      "doc": "Name of the network segment on which the current virtual machine/vport connected to.",
+      "supports": "r",
+      "csv_probe": "silently_dropped",
+      "csv_probe_source": "round1_long_name"
+    },
+    "network_segment_port_group": {
+      "ui_label": "Network Segment Port Group",
+      "csv_name": "network_segment_port_group",
+      "wapi_name": "vswitch_segment_port_group",
+      "type": "string",
+      "is_array": false,
+      "doc": "Port group of the network segment on which the current virtual machine/vport connected to.",
+      "supports": "r",
+      "csv_probe": "silently_dropped",
+      "csv_probe_source": "round1_long_name"
+    },
+    "network_segment_type": {
+      "ui_label": "Network Segment Type",
+      "csv_name": "network_segment_type",
+      "wapi_name": "vswitch_segment_type",
+      "type": "string",
+      "is_array": false,
+      "doc": "Type of the network segment on which the current virtual machine/vport connected to.",
+      "supports": "r",
+      "csv_probe": "silently_dropped",
+      "csv_probe_source": "round1_long_name"
+    },
+    "open_ports": {
+      "ui_label": "Open Port(s)",
+      "csv_name": "open_ports",
+      "wapi_name": "open_ports",
+      "type": "string",
+      "is_array": false,
+      "doc": "The list of opened ports on the IP address, represented as: \"TCP: 21,22,23 UDP: 137,139\". Limited to max total 1000 ports.",
+      "supports": "r",
+      "observed_values": [
+        "TCP:22,80,443 UDP:",
+        "TCP:80,443 UDP:",
+        "TCP:22 UDP:",
+        "TCP:22,443 UDP:",
+        "TCP:22,23,80,443 UDP:",
+        "TCP:22,53,80,443 UDP:67",
+        "TCP:80 UDP:",
+        "TCP:22,53,80,443 UDP:",
+        "TCP:23,80,443 UDP:",
+        "TCP:21,22,53,80,139,161,443 UDP:",
+        "TCP:53,80 UDP:",
+        "TCP:53,88 UDP:",
+        "TCP:80,443,9100 UDP:",
+        "TCP:22,23,80,443,8080 UDP:",
+        "TCP:22,80 UDP:"
+      ],
+      "csv_probe": "accepted_exact",
+      "csv_probe_source": "round2_wapi_name"
+    },
+    "os": {
+      "ui_label": "OS",
+      "csv_name": "os",
+      "wapi_name": "os",
+      "type": "string",
+      "is_array": false,
+      "doc": "The operating system of the detected host or virtual entity. The OS can be one of the following: * Microsoft for all discovered hosts that have a non-null value in the MAC addresses using the NetBIOS discovery method. * A value that a TCP discovery returns. * The OS of a virtual entity on a vSphere server.",
+      "supports": "r",
+      "observed_values": [
+        "lwIP 1.4.1 - 2.0.3",
+        "9.1.0-54969",
+        "Microsoft Windows 10 - 11, Microsoft Windows Server 2016, Microsoft Xbox 360 Dashboard, NTI E-MICRO-TRHP temperature sensor",
+        "Linux 3.11 - 4.9",
+        "Linux 3.2 - 3.8 (97%), Linux 2.6.32 - 2.6.39 (93%), Linux 2.6.38 (93%), Linux 2.6.32 (91%), Linux 2.6.32 - 3.13 (91%), Netgear R9000 router (Linux 3.10) (91%), Linux 3.2 - 3.16 (91%), Linux 3.4 (91%),",
+        "7.24.22.aa64c641bf",
+        "Linux 3.2 - 4.14 (91%), Linux 2.6.32 - 3.10 (91%), OpenWrt 19.07 (Linux 4.14) (91%), Aruba ArubaOS-CX 10.04 (89%), Linux 3.13 - 3.16 (89%), OpenWrt 18.06 (Linux 4.14) (89%), Android 10 (Linux 4.14) (8",
+        "HP iLO 4 remote management interface (95%), Apple iPod touch audio player (iPhone OS 2.1) (94%), HP LaserJet CP1518ni printer (94%), HP Photosmart C4380 printer (94%), HP Laserjet CP1515n printer (93%",
+        "VMware ESXi 7.0.3 (98%)",
+        "VMware ESXi 7.0.3 (95%)",
+        "Linux 3.10 - 3.12",
+        "IPFire 2.27 (Linux 5.15 - 6.1) (95%), Linux 4.19 - 5.15 (95%), Linux 5.4 (95%), Linux 4.15 (94%), IPFire 2.25 firewall (Linux 4.14) (92%), Linux 2.6.32 (92%), Linux 2.6.32 or 3.10 (92%), Linux 4.0 - 4",
+        "Linux 4.15 - 5.19, Linux 4.19, Linux 5.0 - 5.14, OpenWrt 21.02 (Linux 5.4), MikroTik RouterOS 7.2 - 7.5 (Linux 5.6.3)",
+        "Linux 3.10 - 4.11 (97%), Linux 3.2 - 4.14 (97%), Linux 5.1 - 5.15 (97%), Linux 3.13 - 4.4 (91%), Linux 3.16 - 4.6 (91%), Linux 3.8 - 3.16 (91%), Linux 4.10 (91%), Linux 4.4 (91%), OpenWrt 19.07 (Linux",
+        "Linux 3.10 - 4.11 (97%), Linux 3.2 - 4.14 (97%), Linux 5.1 - 5.15 (97%), Linux 3.13 - 3.16 (91%), Linux 3.13 - 4.4 (91%), Linux 3.16 - 4.6 (91%), Linux 3.8 - 3.16 (91%), Linux 4.10 (91%), Linux 4.4 (9"
+      ],
+      "csv_probe": "accepted_exact",
+      "csv_probe_source": "round2_wapi_name"
+    },
+    "physical_host's_nic_names": {
+      "ui_label": "Physical Host's NIC Names",
+      "csv_name": "physical_host's_nic_names",
+      "wapi_name": "vmhost_nic_names",
+      "type": "string",
+      "is_array": false,
+      "doc": "List of all physical port names used by the virtual switch on the physical node on which the virtual machine is hosted. Represented as: \"eth1,eth2,eth3\".",
+      "supports": "r",
+      "csv_probe": "silently_dropped",
+      "csv_probe_source": "round1_long_name"
+    },
+    "physical_host_cidr_subnet": {
+      "ui_label": "Physical Host CIDR Subnet",
+      "csv_name": "physical_host_cidr_subnet",
+      "wapi_name": "vmhost_subnet_cidr",
+      "type": "uint",
+      "is_array": false,
+      "doc": "CIDR subnet of the physical node on which the virtual machine is hosted.",
+      "supports": "r",
+      "csv_probe": "silently_dropped",
+      "csv_probe_source": "round1_long_name"
+    },
+    "physical_host_ip_address": {
+      "ui_label": "Physical Host IP Address",
+      "csv_name": "physical_host_ip_address",
+      "wapi_name": "vmhost_ip_address",
+      "type": "string",
+      "is_array": false,
+      "doc": "IP address of the physical node on which the virtual machine is hosted.",
+      "supports": "r",
+      "csv_probe": "silently_dropped",
+      "csv_probe_source": "round1_long_name"
+    },
+    "physical_host_mac_address": {
+      "ui_label": "Physical Host MAC Address",
+      "csv_name": "physical_host_mac_address",
+      "wapi_name": "vmhost_mac_address",
+      "type": "string",
+      "is_array": false,
+      "doc": "MAC address of the physical node on which the virtual machine is hosted.",
+      "supports": "r",
+      "csv_probe": "silently_dropped",
+      "csv_probe_source": "round1_long_name"
+    },
+    "physical_host_name": {
+      "ui_label": "Physical Host Name",
+      "csv_name": "physical_host_name",
+      "wapi_name": "vmhost_name",
+      "type": "string",
+      "is_array": false,
+      "doc": "Name of the physical node on which the virtual machine is hosted.",
+      "supports": "r",
+      "csv_probe": "silently_dropped",
+      "csv_probe_source": "round1_long_name"
+    },
+    "port_duplex": {
+      "ui_label": "Port Duplex",
+      "csv_name": "port_duplex",
+      "wapi_name": "port_duplex",
+      "type": "string",
+      "is_array": false,
+      "doc": "The negotiated or operational duplex setting of the switch port connected to the end device.",
+      "supports": "r",
+      "csv_probe": "rejected_row",
+      "csv_probe_source": "round2_wapi_name"
+    },
+    "port_link": {
+      "ui_label": "Port Link",
+      "csv_name": "port_link",
+      "wapi_name": "port_link_status",
+      "type": "string",
+      "is_array": false,
+      "doc": "The link status of the switch port connected to the end device. Indicates whether it is connected.",
+      "supports": "r",
+      "csv_probe": "silently_dropped",
+      "csv_probe_source": "round1_long_name"
+    },
+    "port_speed": {
+      "ui_label": "Port Speed",
+      "csv_name": "port_speed",
+      "wapi_name": "port_speed",
+      "type": "string",
+      "is_array": false,
+      "doc": "The interface speed, in Mbps, of the switch port.",
+      "supports": "r",
+      "observed_values": [
+        "Unknown"
+      ],
+      "csv_probe": "rejected_row",
+      "csv_probe_source": "round1_long_name"
+    },
+    "port_status": {
+      "ui_label": "Port Status",
+      "csv_name": "port_status",
+      "wapi_name": "port_status",
+      "type": "string",
+      "is_array": false,
+      "doc": "The operational status of the switch port. Indicates whether the port is up or down.",
+      "supports": "r",
+      "csv_probe": "upload_error",
+      "csv_probe_source": "round1_long_name"
+    },
+    "port_type": {
+      "ui_label": "Port Type",
+      "csv_name": "port_type",
+      "wapi_name": "port_type",
+      "type": "string",
+      "is_array": false,
+      "doc": "The type of switch port.",
+      "supports": "r"
+    },
+    "ssid": {
+      "ui_label": "SSID",
+      "csv_name": "ssid",
+      "wapi_name": "ap_ssid",
+      "type": "string",
+      "is_array": false,
+      "doc": "Service set identifier (SSID) associated with Wireless Access Point.",
+      "supports": "r"
+    },
+    "task_name": {
+      "ui_label": "Task Name",
+      "csv_name": "task_name",
+      "wapi_name": "task_name",
+      "type": "string",
+      "is_array": false,
+      "doc": "The name of the discovery task.",
+      "supports": "r"
+    },
+    "tenant": {
+      "ui_label": "Tenant",
+      "csv_name": "tenant",
+      "wapi_name": "tenant",
+      "type": "string",
+      "is_array": false,
+      "doc": "Discovered tenant.",
+      "supports": "r"
+    },
+    "virtual_cluster": {
+      "ui_label": "Virtual Cluster",
+      "csv_name": "virtual_cluster",
+      "wapi_name": "v_cluster",
+      "type": "string",
+      "is_array": false,
+      "doc": "The name of the VMware cluster to which the virtual entity belongs.",
+      "supports": "r"
+    },
+    "virtual_datacenter": {
+      "ui_label": "Virtual Datacenter",
+      "csv_name": "virtual_datacenter",
+      "wapi_name": "v_datacenter",
+      "type": "string",
+      "is_array": false,
+      "doc": "The name of the vSphere datacenter or container to which the virtual entity belongs.",
+      "supports": "r",
+      "observed_values": [
+        "ha-datacenter"
+      ]
+    },
+    "virtual_entity_name": {
+      "ui_label": "Virtual Entity Name",
+      "csv_name": "virtual_entity_name",
+      "wapi_name": "v_entity_name",
+      "type": "string",
+      "is_array": false,
+      "doc": "The name of the virtual entity.",
+      "supports": "r",
+      "observed_values": [
+        "panorama",
+        "AI",
+        "NIOS-X",
+        "NIOS DDI",
+        "graylog",
+        "ns1"
+      ]
+    },
+    "virtual_entity_type": {
+      "ui_label": "Virtual Entity Type",
+      "csv_name": "virtual_entity_type",
+      "wapi_name": "v_entity_type",
+      "type": "string",
+      "is_array": false,
+      "doc": "The virtual entity type. This can be blank or one of the following: Virtual Machine, Virtual Host, or Virtual Center. Virtual Center represents a VMware vCenter server.",
+      "supports": "r",
+      "observed_values": [
+        "VMACHINE",
+        "VCENTER"
+      ]
+    },
+    "virtual_host": {
+      "ui_label": "Virtual Host",
+      "csv_name": "virtual_host",
+      "wapi_name": "v_host",
+      "type": "string",
+      "is_array": false,
+      "doc": "The name of the VMware server on which the virtual entity was discovered.",
+      "supports": "r",
+      "observed_values": [
+        "esxi2.darknetian.com",
+        "dhcp-10-10-0-9.darknetian.com",
+        "esxi2.local.tld"
+      ]
+    },
+    "virtual_host_adapter": {
+      "ui_label": "Virtual Host Adapter",
+      "csv_name": "virtual_host_adapter",
+      "wapi_name": "v_adapter",
+      "type": "string",
+      "is_array": false,
+      "doc": "The name of the physical network adapter through which the virtual entity is connected to the appliance.",
+      "supports": "r",
+      "observed_values": [
+        "vmnic1",
+        "vmnic2"
+      ]
+    },
+    "virtual_machine_id": {
+      "ui_label": "Virtual Machine ID",
+      "csv_name": "virtual_machine_id",
+      "wapi_name": "vmi_id",
+      "type": "string",
+      "is_array": false,
+      "doc": "ID of the virtual machine.",
+      "supports": "r"
+    },
+    "virtual_machine_name": {
+      "ui_label": "Virtual Machine Name",
+      "csv_name": "virtual_machine_name",
+      "wapi_name": "vmi_name",
+      "type": "string",
+      "is_array": false,
+      "doc": "Name of the virtual machine.",
+      "supports": "r"
+    },
+    "virtual_machine_port_group": {
+      "ui_label": "Virtual Machine Port Group",
+      "csv_name": "virtual_machine_port_group",
+      "wapi_name": "vlan_port_group",
+      "type": "string",
+      "is_array": false,
+      "doc": "Port group which the virtual machine belongs to.",
+      "supports": "r"
+    },
+    "virtual_machine_tenant_id": {
+      "ui_label": "Virtual Machine Tenant ID",
+      "csv_name": "virtual_machine_tenant_id",
+      "wapi_name": "vmi_tenant_id",
+      "type": "string",
+      "is_array": false,
+      "doc": "ID of the tenant which virtual machine belongs to.",
+      "supports": "r"
+    },
+    "virtual_switch": {
+      "ui_label": "Virtual Switch",
+      "csv_name": "virtual_switch",
+      "wapi_name": "v_switch",
+      "type": "string",
+      "is_array": false,
+      "doc": "The name of the switch to which the virtual entity is connected.",
+      "supports": "r",
+      "observed_values": [
+        "vSwitch1",
+        "vSwitch2"
+      ]
+    },
+    "vlan_description": {
+      "ui_label": "VLAN Description",
+      "csv_name": "vlan_description",
+      "wapi_name": "port_vlan_description",
+      "type": "string",
+      "is_array": false,
+      "doc": "The description of the VLAN of the switch port that is connected to the end device.",
+      "supports": "r"
+    },
+    "vlan_id": {
+      "ui_label": "VLAN ID",
+      "csv_name": "vlan_id",
+      "wapi_name": "port_vlan_number",
+      "type": "string",
+      "is_array": false,
+      "doc": "The ID of the VLAN of the switch port.",
+      "supports": "r"
+    },
+    "vlan_name": {
+      "ui_label": "VLAN Name",
+      "csv_name": "vlan_name",
+      "wapi_name": "port_vlan_name",
+      "type": "string",
+      "is_array": false,
+      "doc": "The name of the VLAN of the switch port.",
+      "supports": "r"
+    },
+    "vrf_description": {
+      "ui_label": "VRF Description",
+      "csv_name": "vrf_description",
+      "wapi_name": "vrf_description",
+      "type": "string",
+      "is_array": false,
+      "doc": "Description of the VRF.",
+      "supports": "r"
+    },
+    "vrf_name": {
+      "ui_label": "VRF Name",
+      "csv_name": "vrf_name",
+      "wapi_name": "vrf_name",
+      "type": "string",
+      "is_array": false,
+      "doc": "The name of the VRF.",
+      "supports": "r"
+    },
+    "vrf_rd": {
+      "ui_label": "VRF RD",
+      "csv_name": "vrf_rd",
+      "wapi_name": "vrf_rd",
+      "type": "string",
+      "is_array": false,
+      "doc": "Route distinguisher of the VRF.",
+      "supports": "r"
+    }
+  },
+  "wapi_only_fields": {
+    "device_model": {
+      "wapi_name": "device_model",
+      "type": "string",
+      "is_array": false,
+      "doc": "The model name of the end device in the vendor terminology.",
+      "supports": "r",
+      "csv_mapping_unknown": true,
+      "observed_values": [
+        "VMware ESXi",
+        "IB-V926",
+        "ND-V906",
+        "IB-V5005",
+        "IB-V815",
+        "IB-V1425"
+      ]
+    },
+    "device_port_name": {
+      "wapi_name": "device_port_name",
+      "type": "string",
+      "is_array": false,
+      "doc": "The system name of the interface associated with the discovered IP address.",
+      "supports": "r",
+      "csv_mapping_unknown": true,
+      "observed_values": [
+        "eth1",
+        "primarylan1",
+        "1"
+      ]
+    },
+    "device_port_type": {
+      "wapi_name": "device_port_type",
+      "type": "string",
+      "is_array": false,
+      "doc": "The hardware type of the interface associated with the discovered IP address.",
+      "supports": "r",
+      "csv_mapping_unknown": true,
+      "observed_values": [
+        "ethernet-csmacd",
+        "propVirtual"
+      ]
+    },
+    "device_type": {
+      "wapi_name": "device_type",
+      "type": "string",
+      "is_array": false,
+      "doc": "The type of end host in vendor terminology.",
+      "supports": "r",
+      "csv_mapping_unknown": true,
+      "observed_values": [
+        "unknown",
+        "Linux",
+        "Router",
+        "Switch",
+        "vNIOS",
+        "Windows",
+        "FreeBSD",
+        "Switch-Router",
+        "OpenBSD"
+      ]
+    },
+    "device_vendor": {
+      "wapi_name": "device_vendor",
+      "type": "string",
+      "is_array": false,
+      "doc": "The vendor name of the end host.",
+      "supports": "r",
+      "csv_mapping_unknown": true,
+      "observed_values": [
+        "VMWare",
+        "Infoblox",
+        "Dell",
+        "Compaq",
+        "Netgear",
+        "LinkSys",
+        "Net-SNMP",
+        "Samsung",
+        "Versa",
+        "Aruba",
+        "NEC"
+      ]
+    },
+    "discovered_name": {
+      "wapi_name": "discovered_name",
+      "type": "string",
+      "is_array": false,
+      "doc": "The name of the network device associated with the discovered IP address.",
+      "supports": "r",
+      "csv_mapping_unknown": true,
+      "observed_values": [
+        "unknown",
+        "e300.darknetian.com",
+        "vcenter.darknetian.com",
+        "idrac.darknetian.com",
+        "ilo-esxi2.darknetian.com",
+        "esxi2.darknetian.com",
+        "esxi1.darknetian.com",
+        "nighthawk.darknetian.com",
+        "ai.darknetian.com",
+        "netmri.darknetian.com",
+        "switch.darknetian.com",
+        "infoblox.darknetian.com",
+        "panorama.darknetian.com",
+        "eth1/4",
+        "uddi"
+      ]
+    },
+    "discoverer": {
+      "wapi_name": "discoverer",
+      "type": "string",
+      "is_array": false,
+      "doc": "Specifies whether the IP address was discovered by a NetMRI or NIOS discovery process.",
+      "supports": "r",
+      "csv_mapping_unknown": true,
+      "observed_values": [
+        "Network Insight"
+      ]
+    },
+    "duid": {
+      "wapi_name": "duid",
+      "type": "string",
+      "is_array": false,
+      "doc": "For IPv6 address only. The DHCP unique identifier of the discovered host. This is an optional field, and data might not be included.",
+      "supports": "r",
+      "csv_mapping_unknown": true
+    },
+    "iprg_no": {
+      "wapi_name": "iprg_no",
+      "type": "uint",
+      "is_array": false,
+      "doc": "The port redundant group number.",
+      "supports": "r",
+      "csv_mapping_unknown": true
+    },
+    "iprg_state": {
+      "wapi_name": "iprg_state",
+      "type": "enum",
+      "is_array": false,
+      "doc": "The status for the IP address within port redundant group.",
+      "supports": "r",
+      "csv_mapping_unknown": true,
+      "enum_values": [
+        "VIP",
+        "ACTIVE",
+        "STANDBY",
+        "NEGOTIATION"
+      ]
+    },
+    "iprg_type": {
+      "wapi_name": "iprg_type",
+      "type": "enum",
+      "is_array": false,
+      "doc": "The port redundant group type.",
+      "supports": "r",
+      "csv_mapping_unknown": true,
+      "enum_values": [
+        "HSRP",
+        "VRRP"
+      ]
+    },
+    "netbios_name": {
+      "wapi_name": "netbios_name",
+      "type": "string",
+      "is_array": false,
+      "doc": "The name returned in the NetBIOS reply or the name you manually register for the discovered host.",
+      "supports": "r",
+      "csv_mapping_unknown": true,
+      "observed_values": [
+        "NAS            ",
+        "L8-MBP         "
+      ]
+    },
+    "open_ports": {
+      "wapi_name": "open_ports",
+      "type": "string",
+      "is_array": false,
+      "doc": "The list of opened ports on the IP address, represented as: \"TCP: 21,22,23 UDP: 137,139\". Limited to max total 1000 ports.",
+      "supports": "r",
+      "csv_mapping_unknown": true,
+      "observed_values": [
+        "TCP:22,80,443 UDP:",
+        "TCP:80,443 UDP:",
+        "TCP:22 UDP:",
+        "TCP:22,443 UDP:",
+        "TCP:22,23,80,443 UDP:",
+        "TCP:22,53,80,443 UDP:67",
+        "TCP:80 UDP:",
+        "TCP:22,53,80,443 UDP:",
+        "TCP:23,80,443 UDP:",
+        "TCP:21,22,53,80,139,161,443 UDP:",
+        "TCP:53,80 UDP:",
+        "TCP:53,88 UDP:",
+        "TCP:80,443,9100 UDP:",
+        "TCP:22,23,80,443,8080 UDP:",
+        "TCP:22,80 UDP:"
+      ]
+    },
+    "os": {
+      "wapi_name": "os",
+      "type": "string",
+      "is_array": false,
+      "doc": "The operating system of the detected host or virtual entity. The OS can be one of the following: * Microsoft for all discovered hosts that have a non-null value in the MAC addresses using the NetBIOS discovery method. * A value that a TCP discovery returns. * The OS of a virtual entity on a vSphere server.",
+      "supports": "r",
+      "csv_mapping_unknown": true,
+      "observed_values": [
+        "lwIP 1.4.1 - 2.0.3",
+        "9.1.0-54969",
+        "Microsoft Windows 10 - 11, Microsoft Windows Server 2016, Microsoft Xbox 360 Dashboard, NTI E-MICRO-TRHP temperature sensor",
+        "Linux 3.11 - 4.9",
+        "Linux 3.2 - 3.8 (97%), Linux 2.6.32 - 2.6.39 (93%), Linux 2.6.38 (93%), Linux 2.6.32 (91%), Linux 2.6.32 - 3.13 (91%), Netgear R9000 router (Linux 3.10) (91%), Linux 3.2 - 3.16 (91%), Linux 3.4 (91%),",
+        "7.24.22.aa64c641bf",
+        "Linux 3.2 - 4.14 (91%), Linux 2.6.32 - 3.10 (91%), OpenWrt 19.07 (Linux 4.14) (91%), Aruba ArubaOS-CX 10.04 (89%), Linux 3.13 - 3.16 (89%), OpenWrt 18.06 (Linux 4.14) (89%), Android 10 (Linux 4.14) (8",
+        "HP iLO 4 remote management interface (95%), Apple iPod touch audio player (iPhone OS 2.1) (94%), HP LaserJet CP1518ni printer (94%), HP Photosmart C4380 printer (94%), HP Laserjet CP1515n printer (93%",
+        "VMware ESXi 7.0.3 (98%)",
+        "VMware ESXi 7.0.3 (95%)",
+        "Linux 3.10 - 3.12",
+        "IPFire 2.27 (Linux 5.15 - 6.1) (95%), Linux 4.19 - 5.15 (95%), Linux 5.4 (95%), Linux 4.15 (94%), IPFire 2.25 firewall (Linux 4.14) (92%), Linux 2.6.32 (92%), Linux 2.6.32 or 3.10 (92%), Linux 4.0 - 4",
+        "Linux 4.15 - 5.19, Linux 4.19, Linux 5.0 - 5.14, OpenWrt 21.02 (Linux 5.4), MikroTik RouterOS 7.2 - 7.5 (Linux 5.6.3)",
+        "Linux 3.10 - 4.11 (97%), Linux 3.2 - 4.14 (97%), Linux 5.1 - 5.15 (97%), Linux 3.13 - 4.4 (91%), Linux 3.16 - 4.6 (91%), Linux 3.8 - 3.16 (91%), Linux 4.10 (91%), Linux 4.4 (91%), OpenWrt 19.07 (Linux",
+        "Linux 3.10 - 4.11 (97%), Linux 3.2 - 4.14 (97%), Linux 5.1 - 5.15 (97%), Linux 3.13 - 3.16 (91%), Linux 3.13 - 4.4 (91%), Linux 3.16 - 4.6 (91%), Linux 3.8 - 3.16 (91%), Linux 4.10 (91%), Linux 4.4 (9"
+      ]
+    },
+    "port_duplex": {
+      "wapi_name": "port_duplex",
+      "type": "string",
+      "is_array": false,
+      "doc": "The negotiated or operational duplex setting of the switch port connected to the end device.",
+      "supports": "r",
+      "csv_mapping_unknown": true
+    },
+    "port_speed": {
+      "wapi_name": "port_speed",
+      "type": "string",
+      "is_array": false,
+      "doc": "The interface speed, in Mbps, of the switch port.",
+      "supports": "r",
+      "csv_mapping_unknown": true,
+      "observed_values": [
+        "Unknown"
+      ]
+    },
+    "port_status": {
+      "wapi_name": "port_status",
+      "type": "string",
+      "is_array": false,
+      "doc": "The operational status of the switch port. Indicates whether the port is up or down.",
+      "supports": "r",
+      "csv_mapping_unknown": true
+    },
+    "port_type": {
+      "wapi_name": "port_type",
+      "type": "string",
+      "is_array": false,
+      "doc": "The type of switch port.",
+      "supports": "r",
+      "csv_mapping_unknown": true
+    },
+    "cmp_type": {
+      "wapi_name": "cmp_type",
+      "type": "string",
+      "is_array": false,
+      "doc": "If the IP is coming from a Cloud environment, the Cloud Management Platform type.",
+      "supports": "r",
+      "csv_mapping_unknown": true
+    },
+    "vmi_ip_type": {
+      "wapi_name": "vmi_ip_type",
+      "type": "string",
+      "is_array": false,
+      "doc": "Discovered IP address type.",
+      "supports": "r",
+      "csv_mapping_unknown": true
+    },
+    "vmi_private_address": {
+      "wapi_name": "vmi_private_address",
+      "type": "string",
+      "is_array": false,
+      "doc": "Private IP address of the virtual machine.",
+      "supports": "r",
+      "csv_mapping_unknown": true
+    },
+    "vmi_is_public_address": {
+      "wapi_name": "vmi_is_public_address",
+      "type": "bool",
+      "is_array": false,
+      "doc": "Indicates whether the IP address is a public address.",
+      "supports": "r",
+      "csv_mapping_unknown": true
+    },
+    "cisco_ise_ssid": {
+      "wapi_name": "cisco_ise_ssid",
+      "type": "string",
+      "is_array": false,
+      "doc": "The Cisco ISE SSID.",
+      "supports": "r",
+      "csv_mapping_unknown": true
+    },
+    "cisco_ise_session_state": {
+      "wapi_name": "cisco_ise_session_state",
+      "type": "enum",
+      "is_array": false,
+      "doc": "The Cisco ISE connection session state.",
+      "supports": "r",
+      "csv_mapping_unknown": true,
+      "enum_values": [
+        "AUTHENTICATED",
+        "AUTHENTICATING",
+        "DISCONNECTED",
+        "POSTURED",
+        "STARTED"
+      ]
+    },
+    "cisco_ise_security_group": {
+      "wapi_name": "cisco_ise_security_group",
+      "type": "string",
+      "is_array": false,
+      "doc": "The Cisco ISE security group name.",
+      "supports": "r",
+      "csv_mapping_unknown": true
+    },
+    "task_name": {
+      "wapi_name": "task_name",
+      "type": "string",
+      "is_array": false,
+      "doc": "The name of the discovery task.",
+      "supports": "r",
+      "csv_mapping_unknown": true
+    },
+    "device_location": {
+      "wapi_name": "device_location",
+      "type": "string",
+      "is_array": false,
+      "doc": "Location of device on which the IP address was discovered.",
+      "supports": "r",
+      "csv_mapping_unknown": true,
+      "observed_values": [
+        "homelab",
+        "radio waves...",
+        "\"unknown\"",
+        "basement rack",
+        "Homelab",
+        "Lab"
+      ]
+    },
+    "device_contact": {
+      "wapi_name": "device_contact",
+      "type": "string",
+      "is_array": false,
+      "doc": "Contact information from device on which the IP address was discovered.",
+      "supports": "r",
+      "csv_mapping_unknown": true,
+      "observed_values": [
+        "nic@infoblox.com",
+        "\"support@dell.com\"",
+        "nic@darknetian.com",
+        "you@darknetian",
+        "Unauthorized use prohibited.",
+        "bulletin.nic@gmail.com"
+      ]
+    },
+    "ap_name": {
+      "wapi_name": "ap_name",
+      "type": "string",
+      "is_array": false,
+      "doc": "Discovered name of Wireless Access Point.",
+      "supports": "r",
+      "csv_mapping_unknown": true
+    },
+    "ap_ip_address": {
+      "wapi_name": "ap_ip_address",
+      "type": "string",
+      "is_array": false,
+      "doc": "Discovered IP address of Wireless Access Point.",
+      "supports": "r",
+      "csv_mapping_unknown": true
+    },
+    "tenant": {
+      "wapi_name": "tenant",
+      "type": "string",
+      "is_array": false,
+      "doc": "Discovered tenant.",
+      "supports": "r",
+      "csv_mapping_unknown": true
+    },
+    "vrf_name": {
+      "wapi_name": "vrf_name",
+      "type": "string",
+      "is_array": false,
+      "doc": "The name of the VRF.",
+      "supports": "r",
+      "csv_mapping_unknown": true
+    },
+    "vrf_description": {
+      "wapi_name": "vrf_description",
+      "type": "string",
+      "is_array": false,
+      "doc": "Description of the VRF.",
+      "supports": "r",
+      "csv_mapping_unknown": true
+    },
+    "vrf_rd": {
+      "wapi_name": "vrf_rd",
+      "type": "string",
+      "is_array": false,
+      "doc": "Route distinguisher of the VRF.",
+      "supports": "r",
+      "csv_mapping_unknown": true
+    },
+    "bgp_as": {
+      "wapi_name": "bgp_as",
+      "type": "uint",
+      "is_array": false,
+      "doc": "The BGP autonomous system number.",
+      "supports": "r",
+      "csv_mapping_unknown": true
+    }
+  },
+  "groups": {
+    "physical_host": [
+      "physical_host's_nic_names",
+      "physical_host_cidr_subnet",
+      "physical_host_ip_address",
+      "physical_host_mac_address",
+      "physical_host_name"
+    ],
+    "virtual_machine": [
+      "virtual_machine_id",
+      "virtual_machine_name",
+      "virtual_machine_port_group",
+      "virtual_machine_tenant_id"
+    ],
+    "virtual_host_cluster": [
+      "virtual_host",
+      "virtual_host_adapter",
+      "virtual_cluster",
+      "virtual_datacenter",
+      "virtual_switch",
+      "virtual_entity_name",
+      "virtual_entity_type"
+    ],
+    "attached_device": [
+      "attached_device_address",
+      "attached_device_contact",
+      "attached_device_description",
+      "attached_device_location",
+      "attached_device_model",
+      "attached_device_name",
+      "attached_device_port",
+      "attached_device_port_description",
+      "attached_device_port_id",
+      "attached_device_port_name",
+      "attached_device_type",
+      "attached_device_vendor"
+    ],
+    "attached_virtual_port": [
+      "attached_virtual_port_configured_mode",
+      "attached_virtual_port_configured_speed",
+      "attached_virtual_port_link_status",
+      "attached_virtual_port_mac_address",
+      "attached_virtual_port_mode",
+      "attached_virtual_port_name",
+      "attached_virtual_port_speed"
+    ],
+    "attached_virtual_switch": [
+      "attached_virtual_switch_id",
+      "attached_virtual_switch_ipv6_enabled",
+      "attached_virtual_switch_name",
+      "attached_virtual_switch_type",
+      "attached_virtual_switch_vtep_dhcp_server",
+      "attached_virtual_switch_vtep_ip",
+      "attached_virtual_switch_vtep_multicast",
+      "attached_virtual_switch_vtep_port_group",
+      "attached_virtual_switch_vtep_type",
+      "attached_virtual_switch_vtep_vlan"
+    ],
+    "cisco_ise": [
+      "cisco_ise_end_point_profile",
+      "cisco_ise_security_group",
+      "cisco_ise_session_state",
+      "cisco_ise_ssid"
+    ],
+    "ap_wireless": [
+      "ap_name",
+      "ssid"
+    ],
+    "vlan": [
+      "vlan_description",
+      "vlan_id",
+      "vlan_name"
+    ],
+    "vrf": [
+      "vrf_description",
+      "vrf_name",
+      "vrf_rd"
+    ],
+    "network_segment": [
+      "network_segment_available_ports",
+      "network_segment_id",
+      "network_segment_name",
+      "network_segment_port_group",
+      "network_segment_type"
+    ]
+  },
+  "format_rules": {
+    "timestamps": {
+      "csv_format": "YYYY-MM-DD HH:MM:SS (GMT)",
+      "wapi_readback": "uint epoch seconds",
+      "fields": [
+        "first_discovered_timestamp",
+        "last_discovered_timestamp"
+      ]
+    },
+    "open_ports": {
+      "format": "literal: \"TCP:port1,port2,... UDP:port1,port2,...\"",
+      "example": "TCP:22,53,80,443 UDP:67",
+      "empty_proto": "trailing colon, e.g. \"TCP:22 UDP:\" means no UDP open ports"
+    },
+    "device_type": {
+      "kind": "free string in practice; conventional values from NetMRI category",
+      "observed": [
+        "Switch",
+        "Router",
+        "Switch-Router",
+        "vNIOS",
+        "Linux",
+        "FreeBSD",
+        "Windows",
+        "OpenBSD",
+        "unknown"
+      ]
+    }
+  }
+}

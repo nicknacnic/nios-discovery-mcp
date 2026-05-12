@@ -1,0 +1,21 @@
+[project]
+name = "nios-discovery-mcp"
+version = "0.1.0"
+description = "MCP server + agentic skill for populating Infoblox NIOS Discovered Data via setdiscoverycsv"
+requires-python = ">=3.10"
+dependencies = [
+  "requests>=2.31",
+  "urllib3>=2.0",
+  "mcp>=1.0",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=7", "ruff>=0.5"]
+
+[project.scripts]
+nios-discovery = "cli:main"
+nios-discovery-mcp = "mcp_server:main"
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"

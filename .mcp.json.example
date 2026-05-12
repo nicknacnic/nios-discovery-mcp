@@ -1,0 +1,15 @@
+{
+  "mcpServers": {
+    "nios-discovery": {
+      "command": "python",
+      "args": ["-m", "mcp_server"],
+      "cwd": "/path/to/nios-discovery-mcp",
+      "env": {
+        "NIOS_GM": "192.0.2.10",
+        "NIOS_USER": "admin",
+        "NIOS_PASS": "changeme",
+        "NIOS_VERIFY_CERT": "false"
+      }
+    }
+  }
+}

@@ -1,0 +1,2 @@
+ip_address,first_discovered_timestamp,last_discovered_timestamp,discoverer,discovered_name,mac_address,netbios_name,os,device_type,device_vendor,device_model,network_component_name,network_component_vendor,network_component_model,network_component_port_name,port_vlan_name,port_vlan_number,port_status,port_link_status
+198.51.100.50,2026-05-10 17:37:34,2026-05-11 17:37:34,probe,starbuck.darknetian.com,a4:5e:60:1f:42:8c,STARBUCK,Windows 11 24H2,Endpoint,Dell,Latitude 7440,e300.darknetian.com,Aerohive,Edge-300,Gi0/12,users,100,Up,Connected
