@@ -357,6 +357,124 @@ def main():
             return {"error": str(e)}
 
     @mcp.tool()
+    def create_dns_zone_tool(fqdn: str, view: str = "default",
+                              zone_format: str = "FORWARD",
+                              comment: str = "") -> dict:
+        """Create a primary authoritative DNS zone.
+
+        Args:
+            fqdn: zone FQDN, e.g. "luminary.local" (forward) or
+                  "18.198.in-addr.arpa" (reverse).
+            view: DNS view, defaults to "default".
+            zone_format: "FORWARD" (default) | "IPV4" | "IPV6".
+            comment: free-text visible in NIOS UI.
+
+        Returns the WAPI _ref of the created zone, or an error.
+        HARD-BLOCKED if the target GM is listed in NIOS_READONLY_GMS.
+        """
+        from nios_client import NiosClient, load_cfg, _readonly_gms
+        cfg = load_cfg(f"{HERE}/gm.ini")
+        if cfg["gm"] in _readonly_gms():
+            return {"error": f"refusing create_dns_zone: {cfg['gm']} is listed in NIOS_READONLY_GMS"}
+        cli = NiosClient(cfg, allow_writes=True)
+        body = {"fqdn": fqdn, "view": view, "zone_format": zone_format}
+        if comment:
+            body["comment"] = comment
+        try:
+            ref = cli.post("zone_auth", json_body=body)
+            return {"ref": ref, "fqdn": fqdn}
+        except Exception as e:
+            return {"error": str(e)}
+
+    @mcp.tool()
+    def delete_network_tool(network: str, network_view: str = "default") -> dict:
+        """Delete a leaf network by CIDR. Soft-delete (goes to recycle bin).
+
+        Run empty_recycle_bin_tool afterwards to permanently free capacity.
+        HARD-BLOCKED if the target GM is listed in NIOS_READONLY_GMS.
+        """
+        from nios_client import NiosClient, load_cfg, _readonly_gms
+        cfg = load_cfg(f"{HERE}/gm.ini")
+        if cfg["gm"] in _readonly_gms():
+            return {"error": f"refusing delete_network: {cfg['gm']} is listed in NIOS_READONLY_GMS"}
+        cli = NiosClient(cfg, allow_writes=True)
+        try:
+            hits = cli.get("network", network=network, network_view=network_view)
+            if not hits:
+                return {"error": f"no network matched {network} in view {network_view}"}
+            refs = [h["_ref"] for h in hits]
+            for ref in refs:
+                cli.delete(ref)
+            return {"deleted": refs}
+        except Exception as e:
+            return {"error": str(e)}
+
+    @mcp.tool()
+    def delete_network_container_tool(network: str,
+                                       network_view: str = "default",
+                                       recursive: bool = False) -> dict:
+        """Delete a networkcontainer by CIDR. Soft-delete (recycle bin).
+
+        recursive=True first deletes every leaf network and sub-container
+        beneath this CIDR (depth-first), then the container itself. Useful
+        for tearing down a demo tree in one call.
+
+        Run empty_recycle_bin_tool afterwards to permanently free capacity.
+        HARD-BLOCKED if the target GM is listed in NIOS_READONLY_GMS.
+        """
+        from nios_client import NiosClient, load_cfg, _readonly_gms
+        cfg = load_cfg(f"{HERE}/gm.ini")
+        if cfg["gm"] in _readonly_gms():
+            return {"error": f"refusing delete_network_container: {cfg['gm']} is listed in NIOS_READONLY_GMS"}
+        cli = NiosClient(cfg, allow_writes=True)
+        deleted = []
+        try:
+            if recursive:
+                leaves = cli.get("network", network_container=network,
+                                  network_view=network_view, _max_results=2000)
+                for n in leaves:
+                    cli.delete(n["_ref"]); deleted.append(n["_ref"])
+                subs = cli.get("networkcontainer", network_container=network,
+                                network_view=network_view, _max_results=2000)
+                subs_sorted = sorted(subs,
+                    key=lambda c: int(c["network"].split("/")[1]),
+                    reverse=True)
+                for c in subs_sorted:
+                    cli.delete(c["_ref"]); deleted.append(c["_ref"])
+            hits = cli.get("networkcontainer", network=network,
+                            network_view=network_view)
+            if not hits and not deleted:
+                return {"error": f"no networkcontainer matched {network} in view {network_view}"}
+            for c in hits:
+                cli.delete(c["_ref"]); deleted.append(c["_ref"])
+            return {"deleted": deleted, "count": len(deleted)}
+        except Exception as e:
+            return {"error": str(e), "deleted_so_far": deleted}
+
+    @mcp.tool()
+    def delete_dns_zone_tool(fqdn: str, view: str = "default") -> dict:
+        """Delete an authoritative DNS zone by FQDN. Soft-delete (recycle bin).
+
+        Run empty_recycle_bin_tool afterwards to permanently free capacity.
+        HARD-BLOCKED if the target GM is listed in NIOS_READONLY_GMS.
+        """
+        from nios_client import NiosClient, load_cfg, _readonly_gms
+        cfg = load_cfg(f"{HERE}/gm.ini")
+        if cfg["gm"] in _readonly_gms():
+            return {"error": f"refusing delete_dns_zone: {cfg['gm']} is listed in NIOS_READONLY_GMS"}
+        cli = NiosClient(cfg, allow_writes=True)
+        try:
+            hits = cli.get("zone_auth", fqdn=fqdn, view=view)
+            if not hits:
+                return {"error": f"no zone matched {fqdn} in view {view}"}
+            refs = [h["_ref"] for h in hits]
+            for ref in refs:
+                cli.delete(ref)
+            return {"deleted": refs}
+        except Exception as e:
+            return {"error": str(e)}
+
+    @mcp.tool()
     def simulate_network_tool(network: str, fill_pct: float = 50.0,
                                mode: str = "realistic",
                                seed: int = None,
