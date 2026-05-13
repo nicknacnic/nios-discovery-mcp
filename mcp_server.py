@@ -301,6 +301,62 @@ def main():
         return cli.empty_recycle_bin()
 
     @mcp.tool()
+    def create_network_container_tool(network: str, network_view: str = "default",
+                                       comment: str = "") -> dict:
+        """Create a networkcontainer (IPAM parent for subnetted child networks).
+
+        Args:
+            network: CIDR, e.g. "198.18.0.0/16"
+            network_view: defaults to "default"
+            comment: free-text label visible in IPAM
+
+        Returns the WAPI _ref of the created container, or an error.
+        HARD-BLOCKED if the target GM is listed in NIOS_READONLY_GMS.
+        """
+        from nios_client import NiosClient, load_cfg, _readonly_gms
+        cfg = load_cfg(f"{HERE}/gm.ini")
+        if cfg["gm"] in _readonly_gms():
+            return {"error": f"refusing create_networkcontainer: {cfg['gm']} is listed in NIOS_READONLY_GMS"}
+        cli = NiosClient(cfg, allow_writes=True)
+        body = {"network": network, "network_view": network_view}
+        if comment:
+            body["comment"] = comment
+        try:
+            ref = cli.post("networkcontainer", json_body=body)
+            return {"ref": ref, "network": network}
+        except Exception as e:
+            return {"error": str(e)}
+
+    @mcp.tool()
+    def create_network_tool(network: str, network_view: str = "default",
+                             comment: str = "") -> dict:
+        """Create a leaf network (subnet inside a networkcontainer).
+
+        Args:
+            network: CIDR, e.g. "198.18.0.0/18"
+            network_view: defaults to "default"
+            comment: free-text label visible in IPAM. Use (DISCOVERED) /
+                     (DISCOVERED-partial) prefixes if you want the marker
+                     conventions documented in docs/LESSONS_LEARNED.md.
+
+        Returns the WAPI _ref of the created network, or an error.
+        HARD-BLOCKED if the target GM is listed in NIOS_READONLY_GMS.
+        """
+        from nios_client import NiosClient, load_cfg, _readonly_gms
+        cfg = load_cfg(f"{HERE}/gm.ini")
+        if cfg["gm"] in _readonly_gms():
+            return {"error": f"refusing create_network: {cfg['gm']} is listed in NIOS_READONLY_GMS"}
+        cli = NiosClient(cfg, allow_writes=True)
+        body = {"network": network, "network_view": network_view}
+        if comment:
+            body["comment"] = comment
+        try:
+            ref = cli.post("network", json_body=body)
+            return {"ref": ref, "network": network}
+        except Exception as e:
+            return {"error": str(e)}
+
+    @mcp.tool()
     def simulate_network_tool(network: str, fill_pct: float = 50.0,
                                mode: str = "realistic",
                                seed: int = None,
