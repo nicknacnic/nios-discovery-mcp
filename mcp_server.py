@@ -276,6 +276,27 @@ def main():
         return import_discovery_csv(text, network_view=network_view)
 
     @mcp.tool()
+    def empty_recycle_bin_tool() -> dict:
+        """Permanently delete everything in the grid Recycle Bin.
+
+        Run this AFTER any bulk teardown (zone/network/host-record DELETEs).
+        NIOS soft-deletes — deleted objects continue to count against the
+        appliance's DB capacity until the bin is emptied, so the capacity
+        meter can read >100% even after a successful teardown.
+
+        Returns the WAPI response (typically `{}`, async accept). The
+        background GC worker processes the bin asynchronously; capacity
+        drops within a few minutes.
+
+        HARD-BLOCKED if gm.ini points at a prod grid.
+        """
+        from nios_client import NiosClient, load_cfg
+        cli = NiosClient(load_cfg(f"{HERE}/gm.ini"), allow_writes=True)
+        if cli.read_only:
+            return {"error": "refusing empty_recycle_bin: gm.ini points at a prod-readonly grid"}
+        return cli.empty_recycle_bin()
+
+    @mcp.tool()
     def simulate_network_tool(network: str, fill_pct: float = 50.0,
                                mode: str = "realistic",
                                seed: int = None,

@@ -161,6 +161,21 @@ class NiosClient:
             raise RuntimeError(f"csv_import failed {r.status_code}: {r.text[:500]}")
         return r.json()
 
+    def empty_recycle_bin(self):
+        """Permanently delete everything in the grid Recycle Bin.
+
+        NIOS soft-deletes: object DELETE moves rows to the bin where they
+        still count against the appliance's DB capacity. Without this call
+        the capacity meter can read >100% after a bulk teardown until the
+        next nightly maintenance window.
+
+        Returns the WAPI response (typically `{}`, async accept).
+        """
+        if self.read_only:
+            raise WriteBlockedError(f"refusing empty_recycle_bin on {self.cfg['gm']}")
+        grid_ref = self.get("grid")[0]["_ref"]
+        return self.post(grid_ref, _function="empty_recycle_bin")
+
     def get_ipv4_discoverydata(self, network, network_view, fields=None):
         rf = fields or "ip_address,mac_address,names,types,usage,discovered_data"
         rows = self.get("ipv4address", network=network, network_view=network_view,

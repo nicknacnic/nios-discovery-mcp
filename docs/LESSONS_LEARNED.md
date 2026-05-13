@@ -282,3 +282,35 @@ The two screenshots above are from the same NIOS grid taken minutes
 apart — host records were imported first via `csv_import`, then a
 chunked `setdiscoverycsv` pass populated discovery data on a subset of
 IPs (see §4a on the per-task ceiling and chunking cadence).
+
+## 12. `DELETE` doesn't free DB capacity — empty the Recycle Bin
+
+NIOS soft-deletes. When you `DELETE` a host record, zone, network, or
+discoverydata row, the object moves to the **Recycle Bin** and continues
+to count against the appliance's DB capacity limit. The grid's
+"Database Capacity Used" indicator (visible in the GUI under Dashboards →
+System) will not drop until the bin is emptied.
+
+**Symptom**: you bulk-delete a demo dataset, expect the capacity meter
+to fall, and instead find it reading 100%+ — sometimes well past, because
+the meter doesn't cap. After deleting ~28K demo objects on a TE-V926
+vNIOS the meter read **202%**.
+
+**Fix**: POST `empty_recycle_bin` against the grid object:
+
+```http
+POST /wapi/v2.12/grid/<ref>?_function=empty_recycle_bin
+```
+
+Returns `{}` immediately (async). A background garbage-collector worker
+processes the bin and the capacity meter drops within a few minutes.
+There's also a per-zone variant on `zone_auth` if you need finer
+granularity.
+
+Worth wiring into any teardown script so you don't have to chase the
+capacity alarm afterward. Sample Python:
+
+```python
+grid_ref = cli.get("grid")[0]["_ref"]
+cli.post(grid_ref, _function="empty_recycle_bin")
+```
