@@ -206,9 +206,12 @@ def import_discovery_csv(text: str, network_view: str = "default",
                            "device limit of the target appliance"),
                  "capacity": cap}
     cfg = load_cfg(f"{HERE}/gm.ini")
+    # Check readonly guard BEFORE constructing the client with allow_writes=True
+    # (allow_writes=True would otherwise wipe the cfg["gm"] in NIOS_READONLY_GMS check).
+    from nios_client import _readonly_gms
+    if cfg["gm"] in _readonly_gms():
+        return {"error": f"refusing import: {cfg['gm']} is listed in NIOS_READONLY_GMS"}
     cli = NiosClient(cfg, allow_writes=True)
-    if cli.read_only:
-        return {"error": "refusing import: gm.ini points at a prod-readonly grid"}
     with tempfile.NamedTemporaryFile("w", suffix=".csv", delete=False) as fh:
         fh.write(text); path = fh.name
     try:
@@ -288,12 +291,13 @@ def main():
         background GC worker processes the bin asynchronously; capacity
         drops within a few minutes.
 
-        HARD-BLOCKED if gm.ini points at a prod grid.
+        HARD-BLOCKED if the target GM is listed in NIOS_READONLY_GMS.
         """
-        from nios_client import NiosClient, load_cfg
-        cli = NiosClient(load_cfg(f"{HERE}/gm.ini"), allow_writes=True)
-        if cli.read_only:
-            return {"error": "refusing empty_recycle_bin: gm.ini points at a prod-readonly grid"}
+        from nios_client import NiosClient, load_cfg, _readonly_gms
+        cfg = load_cfg(f"{HERE}/gm.ini")
+        if cfg["gm"] in _readonly_gms():
+            return {"error": f"refusing empty_recycle_bin: {cfg['gm']} is listed in NIOS_READONLY_GMS"}
+        cli = NiosClient(cfg, allow_writes=True)
         return cli.empty_recycle_bin()
 
     @mcp.tool()
