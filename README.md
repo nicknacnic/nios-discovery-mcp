@@ -1,3 +1,5 @@
+> **Superseded by [infoblox_discovery](https://github.com/nicknacnic/infoblox_discovery)** — one library, one MCP, supports both UDDI and NIOS with autodetected fan-out. The NIOS-side MCP work from this repo now lives there as the `NIOSBackend`. This repo is archived.
+
 # nios-discovery-mcp
 
 **An MCP server + agentic skill for populating Infoblox NIOS Discovered Data via `setdiscoverycsv`.**
